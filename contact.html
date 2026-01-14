@@ -117,19 +117,19 @@
         <form class="contact-form" id="contactForm" novalidate>
             <div class="form-group">
                 <label for="name">Nombre</label>
-                <input type="text" id="name" class="form-control" placeholder="Tu nombre">
+                <input type="text" id="name" name="name" class="form-control" placeholder="Tu nombre">
                 <span class="error-msg">Por favor ingresa tu nombre</span>
             </div>
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" class="form-control" placeholder="tu@email.com">
+                <input type="email" id="email" name="email" class="form-control" placeholder="tu@email.com">
                 <span class="error-msg">Por favor ingresa un email válido</span>
             </div>
 
             <div class="form-group">
                 <label for="message">Mensaje</label>
-                <textarea id="message" class="form-control"
+                <textarea id="message" name="message" class="form-control"
                     placeholder="Cuéntame sobre la propuesta o vacante..."></textarea>
                 <span class="error-msg">El mensaje no puede estar vacío</span>
             </div>
@@ -183,18 +183,39 @@
             }
 
             if (isValid) {
-                // Simulate sending
+                // Real submission to Formspree
                 const btn = form.querySelector('button');
                 const originalText = btn.innerText;
                 btn.innerText = 'Enviando...';
                 btn.disabled = true;
 
-                setTimeout(() => {
-                    alert('¡Mensaje enviado con éxito! (Simulación)');
-                    form.reset();
+                const formData = new FormData(form);
+
+                fetch("https://formspree.io/f/xjggvqqk", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        alert('¡Mensaje enviado con éxito! Te contactaré pronto.');
+                        form.reset();
+                    } else {
+                        response.json().then(data => {
+                            if (Object.hasOwn(data, 'errors')) {
+                                alert("Error: " + data["errors"].map(error => error["message"]).join(", "));
+                            } else {
+                                alert("Oops! Hubo un problema al enviar tu formulario.");
+                            }
+                        });
+                    }
+                }).catch(error => {
+                    alert("Oops! Hubo un problema de conexión.");
+                }).finally(() => {
                     btn.innerText = originalText;
                     btn.disabled = false;
-                }, 1500);
+                });
             }
         });
 
