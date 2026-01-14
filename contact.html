@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto | Felipe Troncaro Portfolio</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <style>
+        .contact-section {
+            padding: 8rem 5% 4rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-family: var(--font-main);
+            transition: 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-group.error .form-control {
+            border-color: #ef4444;
+        }
+
+        .form-group.error .error-msg {
+            display: block;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            transition: 0.3s;
+        }
+
+        .social-icon:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Feli<span>.</span></div>
+        <div class="nav-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="about.html">Sobre mí</a></li>
+            <li><a href="projects.html">Proyectos</a></li>
+            <li><a href="contact.html" class="active">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <section class="contact-section fade-up">
+        <div class="section-title">
+            <h2>Contáctame</h2>
+            <p style="color: var(--text-muted); margin-top: 1rem;">Estoy buscando nuevas oportunidades para aportar mis
+                habilidades. Si crees que mi perfil encaja en tu equipo, ¡hablemos!</p>
+        </div>
+
+        <form class="contact-form" id="contactForm" novalidate>
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" class="form-control" placeholder="Tu nombre">
+                <span class="error-msg">Por favor ingresa tu nombre</span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="form-control" placeholder="tu@email.com">
+                <span class="error-msg">Por favor ingresa un email válido</span>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Mensaje</label>
+                <textarea id="message" class="form-control"
+                    placeholder="Cuéntame sobre la propuesta o vacante..."></textarea>
+                <span class="error-msg">El mensaje no puede estar vacío</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Enviar Mensaje</button>
+        </form>
+
+        <div class="social-links">
+
+            <a href="https://www.linkedin.com/in/felipe-troncaro/" target="_blank" class="social-icon"><i
+                    class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/TRONKARO" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+            <a href="mailto:felipetroncaro@gmail.com" class="social-icon"><i class="fas fa-envelope"></i></a>
+        </div>
+    </section>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        const form = document.getElementById('contactForm');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isValid = true;
+
+            // Name validation
+            const name = document.getElementById('name');
+            if (name.value.trim() === '') {
+                setError(name);
+                isValid = false;
+            } else {
+                removeError(name);
+            }
+
+            // Email validation
+            const email = document.getElementById('email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value.trim())) {
+                setError(email);
+                isValid = false;
+            } else {
+                removeError(email);
+            }
+
+            // Message validation
+            const message = document.getElementById('message');
+            if (message.value.trim() === '') {
+                setError(message);
+                isValid = false;
+            } else {
+                removeError(message);
+            }
+
+            if (isValid) {
+                // Simulate sending
+                const btn = form.querySelector('button');
+                const originalText = btn.innerText;
+                btn.innerText = 'Enviando...';
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    alert('¡Mensaje enviado con éxito! (Simulación)');
+                    form.reset();
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }, 1500);
+            }
+        });
+
+        function setError(input) {
+            input.parentElement.classList.add('error');
+        }
+
+        function removeError(input) {
+            input.parentElement.classList.remove('error');
+        }
+    </script>
+</body>
+
+</html>
